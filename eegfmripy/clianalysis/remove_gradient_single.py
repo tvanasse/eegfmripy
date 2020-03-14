@@ -134,6 +134,8 @@ def remove_gradient(
     for latency, _, name in events[0]:
         if name == int(alignment_trigger_name):
             alignment_latency = latency
+            if latency > 100000:
+                break # find first slice trigger for real sequence (after 20 seconds)
 
     # Shift graddata to alignment
     graddata = np.zeros((tmpgraddata.shape[0], tmpgraddata.shape[1]-alignment_latency))
