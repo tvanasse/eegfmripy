@@ -51,14 +51,14 @@ def run(args=None, config=None):
         if data_path.endswith('.fif'):
             raw = mne.io.read_raw_fif(data_path)
         elif data_path.endswith('.vhdr'):
-            montage = mne.channels.read_montage(montage_path)
+            montage = mne.channels.read_custom_montage(montage_path)
             raw = mne.io.read_raw_brainvision(
                 data_path,
-                montage=montage,
+              #  montage=montage,
                 eog=['ECG','ECG1']
             )
         elif data_path.endswith('.set'):
-            montage = mne.channels.read_montage(montage_path)
+            montage = mne.channels.read_custom_montage(montage_path)
             raw = mne.io.read_raw_eeglab(
                 data_path,
                 montage=montage,
@@ -74,7 +74,7 @@ def run(args=None, config=None):
 
         raw.load_data()
         tmpdata = raw.get_data()
-        events = mne.find_events(raw)
+        events = mne.events_from_annotations(raw)
         print(events)
 
         log.info("Running gradient removal...")

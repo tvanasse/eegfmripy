@@ -122,7 +122,7 @@ def remove_gradient(
     ):
 
     tmpgraddata = raw.get_data()
-    events = mne.find_events(raw)
+    events = mne.events_from_annotations(raw)
     print(events)
 
     plt.figure()
@@ -131,8 +131,8 @@ def remove_gradient(
 
     # Get alignment trigger
     alignment_latency = 0
-    for latency, _, name in events:
-        if name == alignment_trigger_name:
+    for latency, _, name in events[0]:
+        if name == int(alignment_trigger_name):
             alignment_latency = latency
 
     # Shift graddata to alignment
